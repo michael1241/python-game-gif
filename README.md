@@ -1,19 +1,19 @@
 # python-game-gif
 
 ## Usage
+### Running App
 
-`$ python3 python-chess-animator.py --gameid GjGniszn --output img.gif --css lichess-blue.css`
-```
-python3 python-chess-animator.py --help
-usage: python-chess-animator.py [-h] [--gameid GAMEID] [--black [BLACK]]
-                                [--css CSS] [--output OUTPUT]
+`$ python3 app.py [--port 8080] [--bind 0.0.0.0] [--css default.css]`
 
-optional arguments:
-  -h, --help       show this help message and exit
-  --gameid GAMEID  game to animate
-  --black [BLACK]  which side to view the game from
-  --css CSS
-  --output OUTPUT
-```
+### Creating Request
+`http://[url]:[port]/[gameid].gif`
+
+Example
+`http://127.0.0.1:8080/nyMfOUDN.gif`
+
+## Installation
+Requires Python 3.6+
+`pip3 install -r requirements.txt`
+
 ## Example
 https://imgur.com/a/LOuyoYU
