@@ -12,6 +12,7 @@ import imageio
 from numpy import array
 from PIL import Image, ImageFont, ImageDraw
 import json
+import datetime
 
 try:
     from StringIO import StringIO
@@ -35,19 +36,13 @@ style = settings.css.read() if settings.css else None
 def serve_gif(gameid):
     meta = request.args.get('meta')
     result = requests.get(f'https://lichess.org/game/export/{gameid}')
-    getdata = requests.get(f'https://lichess.org/api/game/{gameid}')
-    data = json.loads(getdata.text)
+    data = requests.get(f'https://lichess.org/api/game/{gameid}').json()
 
     game = read_game(StringIO(result.text))
     size = 360
     tempfile = TemporaryFile()
 
-    if meta:
-        splash = create_splash(size, data)
-
     with imageio.get_writer(tempfile, mode='I', format='gif', fps=1) as writer:
-        if meta:
-            writer.append_data(splash)
         node = game
         while not node.is_end():
             nextNode = node.variation(0)
@@ -55,6 +50,9 @@ def serve_gif(gameid):
             board_png = imageio.imread(cairosvg.svg2png(bytestring=board_svg))
             writer.append_data(board_png)
             node = nextNode
+        if meta:
+            splash = create_splash(size, data)
+            writer.append_data(splash)
 
     tempfile.seek(0)
 
